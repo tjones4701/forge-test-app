@@ -1,0 +1,25 @@
+modules:
+  jira:projectSettingsPage:
+    - key: ts-test3-hello-world-project-settings-page
+      resource: settings-page
+      resolver:
+        function: resolver
+      render: native
+      title: TS Test Settings Page
+  jira:issueAction:
+    - key: test-app-hello-world-issue-action
+      resource: main
+      resolver:
+        function: resolver
+      render: native
+      title: test-app
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: src/frontend/index.tsx
+  - key: settings-page
+    path: src/frontend/settings-page.tsx
+app:
+  id: ari:cloud:ecosystem::app/89b5a871-b7af-4c41-b626-b1bf775a88f0
