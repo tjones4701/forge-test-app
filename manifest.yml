@@ -13,13 +13,30 @@ modules:
         function: resolver
       render: native
       title: test-app
+  jira:issuePanel:
+    - key: test-app-todo-panel
+      resource: main2
+      resolver:
+        function: todo-resolver
+      title: Todos
+      viewportSize: medium
+      tooltip: Add a todo list
+      render: native
+      icon: https://developer.atlassian.com/platform/forge/images/issue-panel-icon.svg
   function:
+    - key: todo-resolver
+      handler: index.todoHandler
     - key: resolver
       handler: index.handler
 resources:
+  - key: main2
+    path: src/frontend/todo-page.tsx
   - key: main
     path: src/frontend/index.tsx
   - key: settings-page
     path: src/frontend/settings-page.tsx
+permissions:
+  scopes:
+    - storage:app
 app:
   id: ari:cloud:ecosystem::app/89b5a871-b7af-4c41-b626-b1bf775a88f0
