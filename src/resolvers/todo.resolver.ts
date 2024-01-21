@@ -1,5 +1,7 @@
-import Resolver from "@forge/resolver";
 import { storage } from "@forge/api";
+import Resolver from "@forge/resolver";
+import { ChecklistItem } from "src/backend/checklist-store";
+import { ServerStore } from "src/backend/server-store";
 
 const resolver = new Resolver();
 
@@ -63,6 +65,27 @@ resolver.define("delete", async ({ payload, context }) => {
 
 resolver.define("delete-all", ({ context }) => {
   return storage.set(getListKeyFromContext(context), []);
+});
+
+const stores = {
+  [ChecklistItem.name]: ChecklistItem,
+};
+
+function createStore(name: string, context) {
+  const ClassRef = stores[name];
+  if (ClassRef != null) {
+    return new ServerStore(ClassRef, context);
+  }
+}
+
+resolver.define("server-store", async ({ payload, context }) => {
+  const { store, action, params } = payload;
+  const serverStore = createStore(store, context);
+  const method = serverStore[action];
+  if (method == null) {
+    throw new Error("Method not found");
+  }
+  return serverStore[action](...params);
 });
 
 export const handler = resolver.getDefinitions();
